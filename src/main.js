@@ -11,6 +11,10 @@ Vue.use(BootstrapVue);
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 // Fin Bootstrap Vue
+// Vuelidate
+import Vuelidate from 'vuelidate';
+Vue.use(Vuelidate);
+//Fin Vuelidate
 
 var firebase = require("firebase/app");
 
