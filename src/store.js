@@ -13,7 +13,8 @@ export default new Vuex.Store({
     error: '',
     tareas: [],
     tarea: {nombre: '', id: ''},
-    carga: false
+    carga: false,
+    texto: ''
   },
   mutations: {
     // Mutaciones de usuario
@@ -60,12 +61,12 @@ export default new Vuex.Store({
     ingresoUsuario({commit}, payload) {
       firebase.auth().signInWithEmailAndPassword(payload.email, payload.pass)
       .then(res => {
-        console.log(res);
+        //console.log(res);
         commit('setUsuario', {email: res.user.email}, {uid: res.user.uid});
         router.push({name:'inicio'});
       })
       .catch(err => {
-        console.log(err);
+        //console.log(err);
         commit('setError', err.code);
       });
     },
@@ -77,8 +78,8 @@ export default new Vuex.Store({
       }
     },
     cerrarSesion({commit}) {
-      firebase.auth().signOut();
       router.push({name:'ingreso'});
+      firebase.auth().signOut();
       commit('setUsuario', null);
     },
     //Acciones de tareas 
@@ -124,7 +125,7 @@ export default new Vuex.Store({
         nombre: nombre
       })
       .then(doc => {
-        console.log(doc.id);
+        //console.log(doc.id);
         router.push({name:'inicio'});
         commit('cargarFirebase', false);
       });
@@ -133,10 +134,13 @@ export default new Vuex.Store({
       const usuario = firebase.auth().currentUser;
       db.collection(usuario.email).doc(id).delete()
       .then(() => {
-        console.log(`Tarea ${id} eliminada`);
+        //console.log(`Tarea ${id} eliminada`);
         //dispatch('getTareas');
         commit('eliminarTarea', id);
       });
+    },
+    buscador({commit, state}, payload) {
+      state.texto = payload.toLowerCase();
     }
   },
   getters: {
@@ -146,6 +150,16 @@ export default new Vuex.Store({
       } else {
         return true;
       }
+    },
+    arrayFiltrado(state) {
+      let filtrado = [];
+      for(let tarea of state.tareas) {
+        let nombre = tarea.nombre.toLowerCase();
+        if(nombre.indexOf(state.texto) >= 0) {
+          filtrado.push(tarea);
+        }
+      }
+      return filtrado;
     }
   }
 });
