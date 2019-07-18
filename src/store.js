@@ -54,7 +54,7 @@ export default new Vuex.Store({
         });
       })
       .catch(err => {
-        commit('setError', err.message);
+        commit('setError', err.code);
       });
     },
     ingresoUsuario({commit}, payload) {
@@ -66,7 +66,7 @@ export default new Vuex.Store({
       })
       .catch(err => {
         console.log(err);
-        commit('setError', err.message);
+        commit('setError', err.code);
       });
     },
     detectarUsuario({commit}, payload) {
@@ -78,8 +78,8 @@ export default new Vuex.Store({
     },
     cerrarSesion({commit}) {
       firebase.auth().signOut();
-      commit('setUsuario', null);
       router.push({name:'ingreso'});
+      commit('setUsuario', null);
     },
     //Acciones de tareas 
     getTareas({commit}) {

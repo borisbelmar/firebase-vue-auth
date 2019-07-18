@@ -20,7 +20,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import { required, minLength, between } from 'vuelidate/lib/validators';
+import { required, minLength } from 'vuelidate/lib/validators';
 export default {
     name: 'Agregar',
     data(){
